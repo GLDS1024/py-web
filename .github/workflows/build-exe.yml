@@ -3,8 +3,6 @@ name: Build Windows EXE
 on:
   push:
     branches: [ main ]   # 当你推送到 main 分支时触发
-    tags:
-      - 'v*'  # 仅推送 tag 时触发
   workflow_dispatch:     # 支持手动触发
 
 jobs:
@@ -36,15 +34,3 @@ jobs:
         with:
           name: my-app-exe
           path: dist/run_app.exe
-
-      - name: List output
-        run: dir dist
-
-      # ✅ 只有当是 tag 推送时，才执行 Release 上传
-      - name: Upload to GitHub Releases (only on tag)
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/run_app.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
