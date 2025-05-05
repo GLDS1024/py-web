@@ -3,6 +3,8 @@ name: Build Windows EXE
 on:
   push:
     branches: [ main ]   # 当你推送到 main 分支时触发
+    tags:
+      - 'v*'  # 仅推送 tag 时触发
   workflow_dispatch:     # 支持手动触发
 
 jobs:
