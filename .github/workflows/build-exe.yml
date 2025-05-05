@@ -38,7 +38,9 @@ jobs:
       - name: List output
         run: dir dist
 
-      - name: Create GitHub Release
+      # ✅ 只有当是 tag 推送时，才执行 Release 上传
+      - name: Upload to GitHub Releases (only on tag)
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: dist/run_app.exe
