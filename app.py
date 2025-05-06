@@ -4,14 +4,17 @@ import openpyxl
 import io
 import os
 import base64
-import threading
-import watchdog.observers
-from watchdog.events import FileSystemEventHandler
+import platform
+from pathlib import Path
 
 st.set_page_config(page_title="Excel 검색", layout="wide")
 
 # 1. 加载 Excel
-excel_path = "/Users/gwangil/Downloads/메모장.xlsx"
+if platform.system() == "Windows":
+    excel_path = os.path.join(os.environ['USERPROFILE'], "Downloads") + "/메모장.xlsx"
+else:
+    excel_path = os.path.join(Path.home(), "Downloads") + "/메모장.xlsx"
+
 if not os.path.exists(excel_path):
     st.error("❌ 메모장.xlsx 없슴니다~ ")
     st.stop()
