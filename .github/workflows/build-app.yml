@@ -1,4 +1,4 @@
-name: Build Windows EXE
+name: Build macOS Application
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     permissions:
       contents: write
     steps:
@@ -28,14 +28,14 @@ jobs:
       - name: Install pyinstaller
         run: pip install pyinstaller
 
-      - name: Build EXE with pyinstaller
+      - name: Build with pyinstaller
         run: pyinstaller run_app.py --onefile --noconfirm --clean --collect-all=streamlit --add-data="app.py:."
 
-      - name: Upload EXE as artifact
+      - name: Upload as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-app-exe
-          path: dist/run_app.exe
+          name: my-app-app
+          path: dist/run_app
 
       - name: List output
         run: dir dist
@@ -45,6 +45,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/run_app.exe
+          files: dist/run_app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

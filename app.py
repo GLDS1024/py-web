@@ -16,41 +16,8 @@ if not os.path.exists(excel_path):
     st.error("❌ 메모장.xlsx 없슴니다~ ")
     st.stop()
 
-# 全局标志：文件已修改
-file_changed = False
-
-# 1. 定义事件处理器
-class ExcelChangeHandler(FileSystemEventHandler):
-    def on_modified(self, event):
-        global file_changed
-        if not event.is_directory and os.path.abspath(event.src_path) == os.path.abspath(excel_path):
-            file_changed = True
-
-# 2. 启动 Watchdog 线程
-def start_watcher():
-    handler = ExcelChangeHandler()
-    obs = watchdog.observers.Observer()
-    # 监听当前文件所在目录
-    obs.schedule(handler, path=os.path.dirname(excel_path) or '.', recursive=False)
-    obs.daemon = True
-    obs.start()
-
-# 3. 缓存加载，key 包含文件修改时间
-@st.cache_data
-def load_data(path, mtime):
-    return pd.read_excel(path)
-
-# 启动文件监听
-start_watcher()
-
-# 如果检测到文件修改，立刻重跑
-if file_changed:
-    file_changed = False
-    st.experimental_rerun()
-
 # 2. 读取文字表格
-mtime = os.path.getmtime(excel_path)
-df = load_data(excel_path, mtime)
+df = pd.read_excel(excel_path)
 
 # 3. 读取嵌入图片并映射 (row, col) -> bytes
 wb = openpyxl.load_workbook(excel_path)
@@ -102,11 +69,8 @@ style = """
 <style>
 table {border-collapse: collapse; width: 100%; font-size: 14px;}
 th { background-color: #333; color: #fff;padding: 2px; text-align: left;}
-td {border-bottom: 1px solid #ddd; padding: 2px; white-space: pre-wrap;}
-th:nth-child(1), td:nth-child(1) {
-    width: 80px;
-    text-align: center;
-}
+td { border-bottom: 1px solid #ddd; padding: 2px; white-space: pre-wrap;}
+th:nth-child(1), td:nth-child(1) { width: 80px; text-align: center; }
 </style>
 """
 
