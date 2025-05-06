@@ -4,7 +4,7 @@ import sys
 
 def main():
     os.chdir(os.path.dirname(__file__))
-    sys.argv = ["streamlit", "run", "app.py", "--global.developmentMode=false"]
+    sys.argv = ["streamlit", "run", "main.py", "--global.developmentMode=false"]
     sys.exit(stcli.main())
 
 if __name__ == "__main__":
