@@ -29,7 +29,7 @@ jobs:
         run: pip install pyinstaller
 
       - name: Build EXE with pyinstaller
-        run: pyinstaller run_app.py --onefile --noconfirm --clean --collect-all=streamlit --add-data="app.py:."
+        run: pyinstaller run_app.py --onefile --noconfirm --clean --collect-all=streamlit --add-data="main.py:."
 
       - name: Upload EXE as artifact
         uses: actions/upload-artifact@v4
