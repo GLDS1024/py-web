@@ -38,7 +38,7 @@ jobs:
           path: dist/run_app
 
       - name: List output
-        run: dir dist
+        run: ls dist
 
       # ✅ 只有当是 tag 推送时，才执行 Release 上传
       - name: Upload to GitHub Releases (only on tag)
